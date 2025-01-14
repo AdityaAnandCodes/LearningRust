@@ -1,16 +1,16 @@
 fn main() {
     let name = String::from("Hello, world!");
-    let ans = first_word(name);
+    let ans = first_word(&name);
     println!("{}", ans);
 }
 
-fn first_word(str : String) -> String {
-    let mut ans = String::from("");
+fn first_word(str : &String) -> &str {
+    let mut space_index = 0;
     for i in str.chars(){
         if i == ' '{
             break;
         }
-        ans.push_str(&i.to_string());
+        space_index = space_index + 1;
     }
-    return ans;
+    return &str[0..space_index]
 }
