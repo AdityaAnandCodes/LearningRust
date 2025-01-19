@@ -1,30 +1,40 @@
-use std::io;
 use rand::Rng;
-
+use std::io;
 
 fn main() {
-    println!("Guess a number! ");
-    println!("Please input your guess.");
+    println!("Welcome to the Number Guessing Game!");
+    println!("I have chosen a number between 1 and 100. Can you guess it?");
 
-    let secret_number = rand::thread_rng().gen_range(1..=101);
+    // Generate a random number between 1 and 100
+    let secret_number = rand::thread_rng().gen_range(1..=100);
 
-    let mut guess = String::new();
+    loop {
+        println!("Please input your guess:");
 
-    io::stdin().read_line(&mut guess).expect("Failed to read line");
+        let mut guess = String::new();
 
-    println!("You guessed: {}", guess);
+        // Read the user's input
+        io::stdin()
+            .read_line(&mut guess)
+            .expect("Failed to read line");
 
-    match guess.trim().parse::<u32>(){
-        Ok(num) => {
-            if num == secret_number {
-                println!("You win!");
-            } else {
-                println!("You lose! The secret number was: {}", secret_number);
+        // Convert the input to a number
+        let guess: u32 = match guess.trim().parse() {
+            Ok(num) => num,
+            Err(_) => {
+                println!("Please enter a valid number!");
+                continue;
             }
-        },
-        Err(_) => {
-            println!("Please input a number!");
+        };
+
+        // Check the guess
+        if guess < secret_number {
+            println!("Too small!");
+        } else if guess > secret_number {
+            println!("Too big!");
+        } else {
+            println!("You guessed it! The number was {}.", secret_number);
+            break;
         }
     }
-
 }
